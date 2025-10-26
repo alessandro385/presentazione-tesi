@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conclusioni e Sviluppi Futuri</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter','Segoe UI',system-ui,-apple-system,sans-serif; height: 100vh; overflow: hidden; color: #e2e8f0; }
+
+    /* Background stile index */
+    .background-wrapper { position: fixed; inset: 0; z-index: 0; }
+    .background-image { width: 100%; height: 100%; object-fit: cover; object-position: 70% 52%; }
+    .background-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,25,47,.88) 0%, rgba(10,25,47,.65) 35%, rgba(10,25,47,.2) 60%, rgba(10,25,47,.5) 100%); }
+    .vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 30%, rgba(10,25,47,.5) 80%, rgba(10,25,47,.8) 100%); }
+
+    .content { position: relative; z-index: 2; max-width: 1200px; width: 92%; margin: 0 auto; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 18px 0; }
+
+    /* Top bar */
+    .topbar { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 1400px; z-index: 10; }
+    .logo { position: absolute; top: 0; left: -20px; height: 100px; filter: drop-shadow(0 4px 12px rgba(0,0,0,.4)); }
+    .nav { position: absolute; top: 0; right: -20px; display: flex; gap: 12px; }
+    .nav a { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); color: #fff; text-decoration: none; padding: 10px 16px; border-radius: 20px; font-weight: 600; font-size: .95em; backdrop-filter: blur(8px); transition: all .25s; }
+    .nav a:hover { background: rgba(255,255,255,.2); transform: translateY(-1px); }
+
+    /* Main content area */
+    .main-content { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; margin-top: +40px; }
+
+    /* Headings */
+    .titles { margin-bottom: 40px; text-align: center; }
+    .title { font-size: 3.2em; font-weight: 800; background: linear-gradient(135deg,#fff 0%,#e0e7ff 50%,#c7d2fe 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+    .subtitle { font-size: 1.3em; color: #cbd5e1; margin-top: 100px; }
+
+    /* Cards */
+    .cards { display: grid; grid-template-columns: repeat(2,1fr); gap: 25px; }
+    .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.15); border-radius: 16px; padding: 28px; box-shadow: 0 10px 25px rgba(0,0,0,.3); transition: all 0.3s ease; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,.4); border-color: rgba(99,102,241,0.5); }
+    .card h3 { font-size: 1.3em; margin-bottom: 15px; color: #fff; display:flex; align-items:center; gap:10px; }
+    .num { color:#fff; font-weight:700; font-size:1.1em; }
+    .card p { line-height: 1.6; font-size: 1.05em; color: #e5e7eb; }
+
+    @media (max-width: 1024px){ 
+      .cards{grid-template-columns:1fr; gap: 20px;} 
+      .title{font-size:2.5em;} 
+      .subtitle{font-size:1.1em;}
+      .main-content { margin-top: -20px; }
+      .card { padding: 24px; }
+      .card h3 { font-size: 1.2em; }
+      .card p { font-size: 1em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-wrapper">
+    <img src="per esame_immagini/Intro.png" alt="bg" class="background-image">
+    <div class="background-overlay"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <div class="content">
+    <div class="topbar">
+      <img src="per esame_immagini/logo sime partecipazioni.png" alt="Sime Partecipazioni" class="logo">
+      <div class="nav">
+        <a href="capitolo5.html">← Capitolo 5</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="titles">
+        <div class="title">Conclusioni e Sviluppi Futuri</div>
+        <div class="subtitle">Riflessioni su Innovazione e Contesto Aziendale</div>
+      </div>
+
+      <section class="cards">
+        <article class="card">
+          <h3><span class="num">1.</span> Sviluppi Futuri del Sistema</h3>
+          <p>Il completamento del testing dei modelli di Machine Learning permetterà di valutarne l'effettiva messa in produzione. Parallelamente, il sistema continuerà ad accumulare storico per riaddestrare il modello e sfruttarne appieno le potenzialità predittive. La migrazione al database SQL centralizzato continuerà, e l'architettura è già progettata per scalare alla risoluzione quartoraria.</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="num">2.</span> Una Riflessione Critica</h3>
+          <p>L'innovazione nelle PMI italiane è spesso reattiva, non proattiva. Figure con grande esperienza tendono a vedere l'automazione come una minaccia, rifiutandola per paura di errori, senza considerare che i processi manuali sono statisticamente più soggetti a errori umani. Si rischia di accumulare un ritardo tecnologico difficile da recuperare.</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="num">3.</span> Esternalizzazione vs. Know-How</h3>
+          <p>La tendenza a esternalizzare la produzione di algoritmi porta a un impoverimento del know-how aziendale. La conoscenza del dato e di come sfruttarlo è un punto chiave per la competitività. Delegare queste competenze significa rinunciare a un vantaggio competitivo duraturo, rimanendo dipendenti da terze parti.</p>
+        </article>
+
+        <article class="card">
+          <h3><span class="num">4.</span> La Sinergia Mancante</h3>
+          <p>Spesso manca una collaborazione tra l'esperienza consolidata e le competenze innovative. La combinazione ideale sarebbe unire la conoscenza profonda del business con la creatività e la conoscenza di strumenti moderni. Superare la resistenza culturale è fondamentale per aumentare la produttività e creare valore.</p>
+        </article>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

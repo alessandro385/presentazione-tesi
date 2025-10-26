@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capitolo 2 - L'Intelligenza del Sistema</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #e2e8f0;
+        }
+
+        /* Sfondo stile index */
+        .background-wrapper { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 0; 
+        }
+        
+        .background-image { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: 70% 52%; 
+        }
+        
+        .background-overlay { 
+            position: absolute; 
+            inset: 0; 
+            background: linear-gradient(to right, rgba(10,25,47,.88) 0%, rgba(10,25,47,.65) 35%, rgba(10,25,47,.2) 60%, rgba(10,25,47,.5) 100%); 
+        }
+        
+        .vignette { 
+            position: absolute; 
+            inset: 0; 
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(10,25,47,.5) 80%, rgba(10,25,47,.8) 100%); 
+        }
+
+        .slide {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Top bar */
+        .topbar { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 95%; 
+            max-width: 1400px; 
+            z-index: 10; 
+        }
+        
+        .logo { 
+            position: absolute; 
+            top: 0; 
+            left: -20px; 
+            height: 100px; 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,.4)); 
+        }
+        
+        .nav { 
+            position: absolute; 
+            top: 0; 
+            right: -20px; 
+            display: flex; 
+            gap: 12px; 
+        }
+        
+        .nav a { 
+            background: rgba(255,255,255,.12); 
+            border: 1px solid rgba(255,255,255,.25); 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 10px 16px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+            font-size: .95em; 
+            backdrop-filter: blur(8px); 
+            transition: all .25s; 
+        }
+        
+        .nav a:hover { 
+            background: rgba(255,255,255,.2); 
+            transform: translateY(-1px); 
+        }
+
+        .slide-header {
+            background: transparent;
+            color: white;
+            padding: 5px 15px;
+            text-align: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .slide-header h1 {
+            font-size: 2.2em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .slide-header h2 {
+            color: #cbd5e1; 
+            font-size: 0.9em; 
+            margin-bottom: 0;
+        }
+
+        .container {
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 30px 20px 10px 20px;
+            max-width: 1400px;
+            width: 100%;
+            height: calc(100vh - 20px);
+            position: relative;
+            z-index: 2;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .slide-content {
+            padding: 0 15px;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            align-items: start;
+            margin: 0;
+            height: calc(100vh - 130px);
+        }
+
+        .image-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-right: 20px;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .system-image {
+            max-width: 100%;
+            max-height: 600px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .system-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: #6c757d;
+            font-size: 0.9em;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .cards-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            justify-content: space-between;
+        }
+
+        /* Card stile capitoli 3-4 */
+        .workflow-card {
+            background: rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 14px 16px 10px 16px;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+            color: #e2e8f0;
+        }
+
+        .workflow-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35); 
+            border-color: rgba(99,102,241,0.5); 
+        }
+
+        .workflow-card h3 { 
+            color: #ffffff; 
+            font-size: 1.2em; 
+            margin-bottom: 8px; 
+            text-align: left; 
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .workflow-card p { 
+            color: #e5e7eb; 
+            line-height: 1.4; 
+            text-align: left; 
+            font-size: 0.95em;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h3 {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #6366f1;
+            padding-bottom: 8px;
+        }
+
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .objective-card {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .objective-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .objective-card h4 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .objective-card p {
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 95%;
+            height: 95%;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close:hover {
+            color: #bbb;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .objectives-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .slide-header h1 {
+                font-size: 2em;
+            }
+            
+            .slide-content {
+                padding: 20px;
+            }
+            
+            .topbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .container { 
+                padding: 80px 16px 30px 16px; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper">
+        <img src="per esame_immagini/Intro.png" alt="Energy Background" class="background-image">
+        <div class="background-overlay"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <div class="topbar">
+        <img src="per esame_immagini/logo sime partecipazioni.png" alt="Sime Partecipazioni" class="logo">
+        <div class="nav">
+            <a href="capitolo1.html">← Capitolo 1</a>
+            <a href="capitolo3.html">Capitolo 3 →</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="slide">
+            <div class="slide-header">
+                <h1>Capitolo 2: L'Intelligenza del Sistema</h1>
+                <h2>Correlazione Geografica e Meteo</h2>
+            </div>
+        
+        <div class="slide-content">
+            <div class="main-content">
+                <div class="image-section">
+                    <img src="per esame_immagini/Immagine capitolo2.png" alt="Tabella Località Incidenza Consumi - Sistema POD-Località" class="system-image" onclick="openModal()">
+                </div>
+                
+                <div class="cards-section">
+                    <div class="workflow-card">
+                        <h3>1. Abbinamento POD-Località</h3>
+                        <p>Mappatura automatica di 60.000 POD su centinaia di comuni italiani con classificazione in 7 zone di mercato</p>
+                    </div>
+                    
+                    <div class="workflow-card">
+                        <h3>2. Calcolo delle Incidenze</h3>
+                        <p>Media ponderata vs semplice per trasformare la geografia in pesi quantitativi basati sui consumi effettivi</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <h3>3. Integrazione Dati Meteo</h3>
+                        <p>API Open-Meteo per acquisire dati meteorologici storici e previsioni con struttura a tre tabelle distinte</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <h3>4. Valore dei Dati Ponderati</h3>
+                        <p>Impatto delle medie ponderate sulla qualità delle previsioni e sui risultati economici dell'azienda</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal per l'immagine espansa -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage" src="" alt="">
+    </div>
+
+    <script>
+        // Funzioni per il modal dell'immagine
+        function openModal() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const img = document.querySelector('.system-image');
+            
+            modal.style.display = 'block';
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+
+        // Chiudi modal cliccando fuori dall'immagine
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Chiudi modal con tasto ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

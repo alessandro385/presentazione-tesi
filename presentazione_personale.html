@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentazione Personale - Alessandro Barresi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            color: #e2e8f0;
+        }
+
+        /* Sfondo stile index */
+        .background-wrapper { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 0; 
+        }
+        
+        .background-image { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: 70% 52%; 
+        }
+        
+        .background-overlay { 
+            position: absolute; 
+            inset: 0; 
+            background: linear-gradient(to right, rgba(10,25,47,.88) 0%, rgba(10,25,47,.65) 35%, rgba(10,25,47,.2) 60%, rgba(10,25,47,.5) 100%); 
+        }
+        
+        .vignette { 
+            position: absolute; 
+            inset: 0; 
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(10,25,47,.5) 80%, rgba(10,25,47,.8) 100%); 
+        }
+
+        /* Top bar */
+        .topbar { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 95%; 
+            max-width: 1400px; 
+            z-index: 10; 
+        }
+        
+        .logo { 
+            position: absolute; 
+            top: 0; 
+            left: -20px; 
+            height: 100px; 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,.4)); 
+        }
+        
+        .nav { 
+            position: absolute; 
+            top: 0; 
+            right: -20px; 
+            display: flex; 
+            gap: 12px; 
+        }
+        
+        .nav a { 
+            background: rgba(255,255,255,.12); 
+            border: 1px solid rgba(255,255,255,.25); 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 10px 16px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+            font-size: .95em; 
+            backdrop-filter: blur(8px); 
+            transition: all .25s; 
+        }
+        
+        .nav a:hover { 
+            background: rgba(255,255,255,.2); 
+            transform: translateY(-1px); 
+        }
+
+        .slide {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-header {
+            background: transparent;
+            color: white;
+            padding: 10px 40px;
+            text-align: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .slide-header h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .slide-header h2 {
+            color: #cbd5e1; 
+            font-size: 1.1em; 
+            margin-bottom: -5px;
+        }
+
+
+        .container {
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 60px 20px 5px 20px;
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            margin: 0 auto;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide-content {
+            padding: 0px 40px;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: calc(100vh - 80px);
+        }
+
+        .intro-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 12px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .personal-info {
+            text-align: center;
+            background: transparent;
+            padding: 10px;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .personal-info:hover {
+            transform: translateY(-5px);
+        }
+
+        .personal-info h3 {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin-bottom: 8px;
+            border-bottom: 3px solid #6366f1;
+            padding-bottom: 6px;
+            position: relative;
+        }
+
+        .personal-info h3:after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 2px;
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #3498db;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .company-logo {
+            max-width: 140px;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .company-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .name-title {
+            text-align: center;
+        }
+
+        .name-title h4 {
+            color: #ffffff;
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+
+        .name-title p {
+            color: #cbd5e1;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .role-description {
+            background: rgba(255,255,255,0.06);
+            border-left: 4px solid #6366f1;
+            padding: 10px;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .role-description:hover {
+            transform: translateY(-3px);
+        }
+
+        .role-description h4 {
+            color: #ffffff;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .role-description h4:before {
+            content: '🎯';
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .role-description ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .role-description li {
+            margin-bottom: 6px;
+            padding-left: 25px;
+            position: relative;
+            font-size: 1.1em;
+            color: #cbd5e1;
+        }
+
+        .role-description li:before {
+            content: "▶";
+            color: #6366f1;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .company-info {
+            background: rgba(255,255,255,0.06);
+            color: white;
+            padding: 10px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: transform 0.3s ease;
+            margin: 5px 0;
+        }
+
+        .company-info:hover {
+            transform: translateY(-5px);
+        }
+
+        .company-info h4 {
+            font-size: 1.3em;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .company-info h4:before {
+            content: '🏢';
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .company-info p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+
+        .highlight-box {
+            background: rgba(255,255,255,0.06);
+            border-left: 4px solid #6366f1;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 0 15px 15px 0;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .highlight-box:hover {
+            transform: translateY(-3px);
+        }
+
+        .highlight-box h4 {
+            color: #ffffff;
+            font-size: 1.2em;
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        .highlight-box h4:before {
+            content: '💡';
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .highlight-box p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                width: 90%;
+            }
+            
+            .logo {
+                height: 80px;
+                left: -10px;
+            }
+            
+            .nav {
+                right: -10px;
+                gap: 8px;
+            }
+            
+            .nav a {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+            
+            .intro-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .slide-header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper">
+        <img src="per esame_immagini/Intro.png" alt="Energy Background" class="background-image">
+        <div class="background-overlay"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <div class="topbar">
+        <img src="per esame_immagini/logo sime partecipazioni.png" alt="Sime Partecipazioni" class="logo">
+        <div class="nav">
+            <a href="index.html">← Indietro</a>
+            <a href="l.html">Inizia Presentazione →</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="slide">
+        <div class="slide-header">
+            <h1>Presentazione Personale</h1>
+            <h2>Alessandro Barresi - Supply & Portfolio Manager</h2>
+        </div>
+        
+        <div class="slide-content">
+            <div class="intro-section">
+                <div class="personal-info">
+                    <h3>👨‍💼 Chi Sono</h3>
+                    <div class="profile-section">
+                        <img src="per esame_immagini/ReactNative-snapshot-image1990861406668673741.jpg" alt="Alessandro Barresi" class="profile-photo">
+                        <div class="name-title">
+                            <h4>Alessandro Barresi</h4>
+                            <p>Supply & Portfolio Manager - Junior</p>
+                        </div>
+                        <img src="per esame_immagini/logo sime partecipazioni.png" alt="Logo Sime Partecipazioni" class="company-logo">
+                    </div>
+                </div>
+                
+                <div class="role-description">
+                    <h4>🎯 Le Mie Responsabilità</h4>
+                    <ul>
+                        <li><strong>Portfolio Management:</strong> Gestione del portafoglio energetico di ~60.000 POD</li>
+                        <li><strong>Forecasting:</strong> Previsioni dei consumi energetici per ottimizzazione economica</li>
+                        <li><strong>Sviluppo Database:</strong> Creazione di sistemi per accelerare i processi operativi</li>
+                       
+                    </ul>
+                </div>
+            </div>
+
+            <div class="company-info">
+                <h4>🏢 Sime Partecipazioni</h4>
+                <p>Operatore del settore energetico specializzato nella gestione di portafogli clienti, 
+                con focus sull'innovazione tecnologica e l'ottimizzazione dei processi di forecasting 
+                per il mercato elettrico italiano.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>💡 Il Progetto di Tesi</h4>
+                <p>Questo progetto nasce direttamente dalle sfide quotidiane del mio ruolo: 
+                <strong>trasformare l'infrastruttura dati tradizionale in un ecosistema intelligente 
+                che integra Machine Learning, automazione e analisi avanzate</strong> per migliorare 
+                l'accuratezza delle previsioni e l'efficienza operativa.</p>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

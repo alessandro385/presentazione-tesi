@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capitolo 4 - Generazione e Verifica (Stile Index)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+      height: 100vh; overflow: hidden; color: #e2e8f0;
+    }
+
+    /* Background come index */
+    .background-wrapper { position: fixed; inset: 0; z-index: 0; }
+    .background-image { width: 100%; height: 100%; object-fit: cover; object-position: 70% 52%; }
+    .background-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,25,47,.88) 0%, rgba(10,25,47,.65) 35%, rgba(10,25,47,.2) 60%, rgba(10,25,47,.5) 100%); }
+    .vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 30%, rgba(10,25,47,.5) 80%, rgba(10,25,47,.8) 100%); }
+
+    /* Container */
+    .content-container { position: relative; z-index: 2; max-width: 1400px; width: 92%; margin: 0 auto; min-height: 100vh; display: grid; grid-template-rows: auto 1fr; align-items: center; }
+    .header { padding: 28px 0 0; display: flex; justify-content: space-between; align-items: center; }
+    .title { font-size: 3.2em; font-weight: 800; background: linear-gradient(135deg,#fff 0%,#e0e7ff 50%,#c7d2fe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+    .subtitle { font-size: 1.2em; color: #cbd5e1; margin-top: 6px; }
+
+    /* Main grid: immagine + box */
+    .main { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 36px; align-items: start; }
+    .frame { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+    .hero-image { width: 100%; height: 420px; object-fit: cover; border-radius: 12px; display: block; background: #0a192f; }
+    .caption { margin-top: 8px; font-size: .95em; color: #cbd5e1; text-align: center; }
+
+    .cards { display: grid; gap: 16px; }
+    .card { padding: 18px; border-radius: 14px; box-shadow: 0 8px 18px rgba(0,0,0,.25); color: #fff; }
+    .card h4 { font-size: 1.05em; margin-bottom: 10px; }
+    .card ul { font-size: .95em; line-height: 1.45; margin-left: 16px; }
+    .danger { background: linear-gradient(135deg,#ff7675 0%,#d63031 100%); }
+    .success { background: linear-gradient(135deg,#00b894 0%,#00a085 100%); }
+
+    /* Sezione obiettivi */
+    .section-title { margin: 16px 0 8px; font-size: 1.4em; color: #e2e8f0; border-bottom: 2px solid #60a5fa; padding-bottom: 6px; }
+    .objectives { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    .objective { background: linear-gradient(135deg,#74b9ff 0%,#0984e3 100%); border-radius: 12px; padding: 14px; text-align: center; box-shadow: 0 6px 16px rgba(0,0,0,.25); }
+    .objective h5 { color: #fff; font-size: 1em; margin-bottom: 6px; }
+    .objective p { color: #eef2ff; font-size: .9em; line-height: 1.35; }
+
+    /* CTA stile index */
+    .cta-row { margin-top: 12px; display: flex; gap: 12px; justify-content: center; }
+    .start-button { background: linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%); color: #fff; border: 0; padding: 12px 24px; border-radius: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 6px 25px rgba(99,102,241,.5), 0 0 40px rgba(139,92,246,.3); position: relative; overflow: hidden; }
+    .start-button::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent); transition:left .6s ease; }
+    .start-button:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(99,102,241,.7), 0 0 60px rgba(139,92,246,.5); }
+    .start-button:hover::before { left:100%; }
+
+    /* Modal */
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.9); z-index: 50; }
+    .modal-content { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:92%; height:86%; object-fit:contain; border-radius:12px; box-shadow:0 20px 40px rgba(0,0,0,.6); background:#000; }
+    .close { position:absolute; top:16px; right:26px; color:#fff; font-size:36px; cursor:pointer; z-index:51; }
+
+    /* Responsive */
+    @media (max-width: 1100px){ .objectives { grid-template-columns: repeat(2,1fr);} .main { grid-template-columns: 1fr; } .hero-image{ height: 320px;} }
+    @media (max-width: 640px){ .title{font-size:2.2em;} }
+  </style>
+</head>
+<body>
+  <div class="background-wrapper">
+    <img src="per esame_immagini/Intro.png" class="background-image" alt="bg">
+    <div class="background-overlay"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <div class="content-container">
+    <header class="header">
+      <div>
+        <div class="title">Capitolo 4: Generazione e Verifica</div>
+        <div class="subtitle">Dal forecast agli ordini verificati</div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="frame">
+        <img src="per esame_immagini/Immagine1_capitolo4.png" alt="Workflow ordini" class="hero-image">
+        <div class="caption"><strong>Pipeline ordini:</strong> XML conformi, CSV di controllo e verifica post‑caricamento</div>
+        <div class="cta-row">
+          <button class="start-button" onclick="openVideo()">Guarda il Video</button>
+          <button class="start-button" onclick="openScreenshot()">Apri Screenshot</button>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card danger">
+          <h4>Rischi Operativi</h4>
+          <ul>
+            <li>Ordini mancanti/errati → sbilanciamenti e costi immediati</li>
+            <li>Formati non conformi → rigetti del GME</li>
+            <li>Deadlines rigide (MGP entro le 11)</li>
+          </ul>
+        </div>
+        <div class="card success">
+          <h4>Automazione End‑to‑End</h4>
+          <ul>
+            <li>XML conformi al tracciato GME</li>
+            <li>CSV di controllo per zona/ora</li>
+            <li>Verifica automatica post‑caricamento</li>
+          </ul>
+        </div>
+
+        <div class="section-title">Generazione e Verifica</div>
+        <div class="objectives">
+          <div class="objective"><h5>XML conformi</h5><p>Regole e arrotondamenti ufficiali</p></div>
+          <div class="objective"><h5>CSV controllo</h5><p>Quote per zona/ora con timestamp</p></div>
+          <div class="objective"><h5>Verifica automatica</h5><p>Confronto inviato vs registrato</p></div>
+          <div class="objective"><h5>Audit trail</h5><p>Versioni e autore delle modifiche</p></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modals -->
+  <div id="imageModal" class="modal" onclick="closeImage(event)">
+    <span class="close" onclick="closeImage(event)">&times;</span>
+    <img id="modalImage" class="modal-content" alt="Screenshot" />
+  </div>
+  <div id="videoModal" class="modal" onclick="closeVideo(event)">
+    <span class="close" onclick="closeVideo(event)">&times;</span>
+    <video id="modalVideo" class="modal-content" controls></video>
+  </div>
+
+  <script>
+    function openScreenshot(){
+      const m=document.getElementById('imageModal');
+      const img=document.getElementById('modalImage');
+      img.src='per esame_immagini/Screenshot 2025-10-08 121245.png';
+      m.style.display='block';
+    }
+    function closeImage(e){ if(e && e.target && e.target.id!=='modalImage'){ document.getElementById('imageModal').style.display='none'; document.getElementById('modalImage').src=''; } }
+    function openVideo(){
+      const m=document.getElementById('videoModal');
+      const v=document.getElementById('modalVideo');
+      v.src='per esame video/Registrazione dello schermo 2025-10-23 153450.mp4';
+      m.style.display='block'; v.currentTime=0; v.play();
+    }
+    function closeVideo(e){ const v=document.getElementById('modalVideo'); if(e && e.target && e.target.id!=='modalVideo'){ v.pause(); v.src=''; document.getElementById('videoModal').style.display='none'; } }
+  </script>
+</body>
+</html>
+

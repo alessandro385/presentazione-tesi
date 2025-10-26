@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trasformazione Digitale nel Settore Energetico</title>
+    <style>
+        /* Reset e Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            color: #e2e8f0;
+        }
+
+        /* Sfondo con immagine e overlay */
+        .background-wrapper { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 0; 
+        }
+        
+        .background-image { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: 70% 52%; 
+        }
+        
+        .background-overlay { 
+            position: absolute; 
+            inset: 0; 
+            background: linear-gradient(to right, rgba(10,25,47,.88) 0%, rgba(10,25,47,.65) 35%, rgba(10,25,47,.2) 60%, rgba(10,25,47,.5) 100%); 
+        }
+        
+        .vignette { 
+            position: absolute; 
+            inset: 0; 
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(10,25,47,.5) 80%, rgba(10,25,47,.8) 100%); 
+        }
+
+        /* Top bar */
+        .topbar { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 95%; 
+            max-width: 1400px; 
+            z-index: 10; 
+        }
+        
+        .logo { 
+            position: absolute; 
+            top: 0; 
+            left: -20px; 
+            height: 100px; 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,.4)); 
+        }
+        
+        .nav { 
+            position: absolute; 
+            top: 0; 
+            right: -20px; 
+            display: flex; 
+            gap: 12px; 
+        }
+        
+        .nav a { 
+            background: rgba(255,255,255,.12); 
+            border: 1px solid rgba(255,255,255,.25); 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 10px 16px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+            font-size: .95em; 
+            backdrop-filter: blur(8px); 
+            transition: all .25s; 
+        }
+        
+        .nav a:hover { 
+            background: rgba(255,255,255,.2); 
+            transform: translateY(-1px); 
+        }
+
+        /* Header della pagina */
+        .page-header {
+            position: fixed;
+            top: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 1400px;
+            z-index: 9;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .page-header h2 {
+            color: #cbd5e1;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+
+        /* Container Principale */
+        .container {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            grid-template-rows: 1fr 100px;
+            gap: 20px;
+            padding: 260px 70px 70px 70px;
+            height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Prima Riga - Colonna Sinistra (IMMAGINE) */
+        .row-1-left {
+            grid-column: 1;
+            grid-row: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .row-1-left img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .row-1-left img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Prima Riga - Colonna Destra (PROBLEMI + SOLUZIONE) */
+        .row-1-right {
+            grid-column: 2;
+            grid-row: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* STILE GENERALE DELLE CARD */
+        .card {
+            background: rgba(255,255,255,0.06);
+            padding: 24px 28px;
+            border-radius: 16px;
+            flex: 1;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+            border-color: rgba(99,102,241,0.5);
+        }
+
+        .card h3 {
+            color: #ffffff;
+            font-size: 1.35em;
+            margin-bottom: 12px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .card p {
+            color: #cbd5e1;
+            line-height: 1.6;
+            font-size: 0.98em;
+            margin: 0;
+        }
+
+        .card p strong {
+            color: #e0e7ff;
+            font-weight: 600;
+        }
+
+        /* Seconda Riga - Colonna Sinistra (MODERNIZZAZIONE) */
+        .row-2-left {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        /* Seconda Riga - Colonna Destra (AUTOMAZIONE) */
+        .row-2-right {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        /* Modal per immagine ingrandita */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 95%;
+            height: 95%;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close:hover {
+            color: #bbb;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto auto;
+                padding: 180px 20px 20px 20px;
+                gap: 15px;
+            }
+
+            .row-1-left,
+            .row-1-right,
+            .row-2-left,
+            .row-2-right {
+                grid-column: 1;
+            }
+
+            .row-1-left {
+                grid-row: 1;
+                max-height: 300px;
+            }
+
+            .row-1-right {
+                grid-row: 2;
+            }
+
+            .row-2-left {
+                grid-row: 3;
+            }
+
+            .row-2-right {
+                grid-row: 4;
+            }
+
+            .page-header h1 {
+                font-size: 1.8em;
+            }
+
+            .page-header h2 {
+                font-size: 0.95em;
+            }
+
+            .logo {
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sfondo -->
+    <div class="background-wrapper">
+        <img src="per esame_immagini/Intro.png" alt="Energy Background" class="background-image">
+        <div class="background-overlay"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <!-- Top bar -->
+    <div class="topbar">
+        <img src="per esame_immagini/logo sime partecipazioni.png" alt="Sime Partecipazioni" class="logo">
+        <div class="nav">
+            <a href="presentazione_personale.html">← Chi Sono</a>
+            <a href="capitolo1.html">Capitolo 1 →</a>
+        </div>
+    </div>
+
+    <!-- Header pagina -->
+    <div class="page-header">
+        <h1>Trasformazione Digitale nel Settore Energetico</h1>
+        <h2>Un Ecosistema Integrato per il Forecasting dei Consumi Energetici</h2>
+    </div>
+
+    <!-- Container principale -->
+    <div class="container">
+        <!-- Prima Riga -->
+        <div class="row-1-left">
+            <img src="per esame_immagini/Screenshot 2025-10-08 121847.png" alt="Struttura Database SQL Server" onclick="openModal()">
+        </div>
+        
+        <div class="row-1-right">
+            <div class="card">
+                <h3>❌ Problemi Tradizionali</h3>
+                <p><strong>Frammentazione:</strong> Dati sparsi in Excel e Access<br>
+                <strong>Errori Umani:</strong> Processi manuali soggetti a errori<br>
+                <strong>Scalabilità:</strong> Limiti dei sistemi legacy<br>
+                <strong>Precisione:</strong> Forecasting basato su ricalendarizzazione</p>
+            </div>
+            <div class="card">
+                <h3>✅ La Nostra Soluzione</h3>
+                <p><strong>Database Centralizzato:</strong> SQL Server come hub unico<br>
+                <strong>Automazione:</strong> Script Python per processi ripetitivi<br>
+                <strong>Machine Learning:</strong> Modelli predittivi avanzati<br>
+                <strong>Dashboard:</strong> Analisi interattive in tempo reale</p>
+            </div>
+        </div>
+
+        <!-- Seconda Riga -->
+        <div class="row-2-left">
+            <div class="card">
+                <h3>🏗️ Modernizzazione</h3>
+                <p>Da Access/VBA a SQL Server con architettura scalabile e moderna</p>
+            </div>
+        </div>
+        
+        <div class="row-2-right">
+            <div class="card">
+                <h3>🤖 Automazione</h3>
+                <p>Eliminazione errori umani attraverso processi automatizzati</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per immagine ingrandita -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        function openModal() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const img = document.querySelector('.row-1-left img');
+            
+            modal.style.display = 'block';
+            modalImg.src = img.src;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Chiudi modal con Esc o click fuori
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>

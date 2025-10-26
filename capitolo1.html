@@ -1,0 +1,496 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capitolo 1 - La Fondazione</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body { height: 100%; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* niente scroll */
+            color: #e2e8f0;
+        }
+
+        /* Sfondo stile index */
+        .background-wrapper { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 0; 
+        }
+        
+        .background-image { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: 70% 52%; 
+        }
+        
+        .background-overlay { 
+            position: absolute; 
+            inset: 0; 
+            background: linear-gradient(to right, rgba(10,25,47,.88) 0%, rgba(10,25,47,.65) 35%, rgba(10,25,47,.2) 60%, rgba(10,25,47,.5) 100%); 
+        }
+        
+        .vignette { 
+            position: absolute; 
+            inset: 0; 
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(10,25,47,.5) 80%, rgba(10,25,47,.8) 100%); 
+        }
+
+        .slide {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Top bar */
+        .topbar { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 95%; 
+            max-width: 1400px; 
+            z-index: 10; 
+        }
+        
+        .logo { 
+            position: absolute; 
+            top: 0; 
+            left: -20px; 
+            height: 100px; 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,.4)); 
+        }
+        
+        .nav { 
+            position: absolute; 
+            top: 0; 
+            right: -20px; 
+            display: flex; 
+            gap: 12px; 
+        }
+        
+        .nav a { 
+            background: rgba(255,255,255,.12); 
+            border: 1px solid rgba(255,255,255,.25); 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 10px 16px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+            font-size: .95em; 
+            backdrop-filter: blur(8px); 
+            transition: all .25s; 
+        }
+        
+        .nav a:hover { 
+            background: rgba(255,255,255,.2); 
+            transform: translateY(-1px); 
+        }
+
+        .slide-header {
+            background: transparent;
+            color: white;
+            padding: 12px 32px;
+            text-align: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .slide-header h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .slide-header h2 {
+            color: #e2e8f0; 
+            font-size: 1.3em; 
+            font-weight: 600;
+        }
+
+        .container {
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 60px 20px 20px 20px;
+            max-width: 1400px;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            z-index: 2;
+            margin: 0 auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-content {
+            padding: 60px 24px 16px 24px; /* compattiamo gli spazi */
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* sposta immagine e punti in alto */
+            gap: 12px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 28px;
+            align-items: start;
+            margin: 0;
+            order: 1;
+        }
+
+        .components-section {
+            margin-top: 10px;
+            order: 2; /* spostata sotto immagine e punti */
+            display: none; /* rimuove tutte le altre card (RCU/DB/Orch/Pannello) */
+        }
+
+        /* Nessuna card nascosta nella lista 1..4: numerazione aggiornata in HTML */
+
+        .image-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .system-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .system-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+
+        /* Override dimensionamento immagine per maggiore leggibilità */
+        .system-image { max-height: 600px; }
+
+
+
+
+        .cards-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 600px;
+        }
+
+        .workflow-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 13px 13px;
+            border-radius: 16px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+            transition: transform 0.3s ease;
+        }
+
+        .workflow-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .workflow-card h3 {
+            color: #ffffff;
+            font-size: 1.35em;
+            margin-bottom: 10px;
+            text-align: left;
+            font-weight: 800;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .workflow-card h3::before {
+            content: attr(data-number);
+            font-weight: 800;
+            color: #ffffff;
+            min-width: 5px;
+            flex-shrink: 0;
+        }
+
+        .workflow-card p {
+            color: #e5e7eb;
+            font-size: 1.08em;
+            line-height: 1.45;
+            font-weight: 700;
+        }
+
+        .section {
+            margin-bottom: 16px;
+        }
+
+        .section h3 {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #6366f1;
+            padding-bottom: 8px;
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 95%;
+            height: 95%;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .workflow-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .workflow-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 80%;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .workflow-modal .workflow-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            margin: 0;
+            cursor: default;
+        }
+
+        .workflow-modal .workflow-step {
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .workflow-modal .workflow-image {
+            width: 120px;
+            height: 90px;
+        }
+
+        .workflow-modal .workflow-text {
+            font-size: 1em;
+        }
+
+        .workflow-modal .central-button {
+            padding: 20px 30px;
+            font-size: 1.1em;
+            margin: 15px 0;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close:hover {
+            color: #bbb;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 500px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .slide-header h1 {
+                font-size: 2em;
+            }
+            
+            .slide-content {
+                padding: 20px;
+            }
+            
+            .topbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .container { 
+                padding: 100px 12px 20px 12px; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper">
+        <img src="per esame_immagini/Intro.png" alt="Energy Background" class="background-image">
+        <div class="background-overlay"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <div class="topbar">
+        <img src="per esame_immagini/logo sime partecipazioni.png" alt="Sime Partecipazioni" class="logo">
+        <div class="nav">
+            <a href="l.html">← Introduzione</a>
+            <a href="capitolo2.html">Capitolo 2 →</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="slide">
+            <div class="slide-header">
+                <h1>Capitolo 1: La Fondazione</h1>
+                <h2>Sistema Centrale di Elaborazione Dati</h2>
+            </div>
+        
+        <div class="slide-content">
+            <div class="main-content">
+                <div class="image-section">
+                    <img src="per esame_immagini/immagine capitolo_1.png" alt="Sistema ETL RCU e Database Hub" class="system-image" onclick="openModal()">
+                </div>
+                
+                <div class="cards-section">
+                    <div class="workflow-card">
+                        <h3 data-number="1.">Elaborazione Automatica RCU</h3>
+                        <p>Dal caos dei file ZIP ai dati strutturati in 5 minuti</p>
+                    </div>
+                    
+                    <div class="workflow-card">
+                        <h3 data-number="2.">Database SQL Hub</h3>
+                        <p>Architettura centralizzata e scalabile per tutti i dati</p>
+                    </div>
+                    
+                    <div class="workflow-card">
+                        <h3 data-number="3.">Pannello di Controllo</h3>
+                        <p>Interfaccia unificata per il consolidamento dei processi</p>
+                    </div>
+                    
+                    <div class="workflow-card">
+                        <h3 data-number="4.">Filosofia di Progettazione</h3>
+                        <p>Strumenti usabili e documentati per operatori non tecnici</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal per l'immagine espansa -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage" src="" alt="">
+    </div>
+
+
+    <script>
+        // Funzioni per il modal dell'immagine
+        function openModal() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const img = document.querySelector('.system-image');
+            
+            modal.style.display = 'block';
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+
+        // Chiudi modal cliccando fuori dall'immagine
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Chiudi modal con tasto ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

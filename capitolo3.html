@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capitolo 3 - Il Cuore del Sistema</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: #e2e8f0;
+        }
+
+        /* Sfondo stile index */
+        .background-wrapper { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 0; 
+        }
+        
+        .background-image { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: 70% 52%; 
+        }
+        
+        .background-overlay { 
+            position: absolute; 
+            inset: 0; 
+            background: linear-gradient(to right, rgba(10,25,47,.88) 0%, rgba(10,25,47,.65) 35%, rgba(10,25,47,.2) 60%, rgba(10,25,47,.5) 100%); 
+        }
+        
+        .vignette { 
+            position: absolute; 
+            inset: 0; 
+            background: radial-gradient(ellipse at center, transparent 30%, rgba(10,25,47,.5) 80%, rgba(10,25,47,.8) 100%); 
+        }
+
+        /* Top bar */
+        .topbar { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 95%; 
+            max-width: 1400px; 
+            z-index: 10; 
+        }
+        
+        .logo { 
+            position: absolute; 
+            top: 0; 
+            left: -20px; 
+            height: 100px; 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,.4)); 
+        }
+        
+        .nav { 
+            position: absolute; 
+            top: 0; 
+            right: -20px; 
+            display: flex; 
+            gap: 12px; 
+        }
+        
+        .nav a { 
+            background: rgba(255,255,255,.12); 
+            border: 1px solid rgba(255,255,255,.25); 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 10px 16px; 
+            border-radius: 20px; 
+            font-weight: 600; 
+            font-size: .95em; 
+            backdrop-filter: blur(8px); 
+            transition: all .25s; 
+        }
+        
+        .nav a:hover { 
+            background: rgba(255,255,255,.2); 
+            transform: translateY(-1px); 
+        }
+
+        .container {
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 60px 20px 40px 20px;
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            margin: 0 auto;
+        }
+
+        .header { 
+            text-align: center; 
+            margin-bottom: 35px; 
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .header p { 
+            color: #cbd5e1; 
+            font-size: 1.1em; 
+        }
+
+
+
+        /* Pulsanti in stile index */
+        .btn {
+            padding: 14px 26px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: -100%; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); 
+            transition: left 0.6s ease; 
+        }
+
+        .btn:hover { 
+            transform: translateY(-2px); 
+        }
+
+        .btn:hover::before { 
+            left: 100%; 
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            box-shadow: none;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 10px 35px rgba(99,102,241,0.7), 0 0 60px rgba(139,92,246,0.5);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.5), 0 0 40px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 10px 35px rgba(16,185,129,0.7), 0 0 60px rgba(5,150,105,0.5);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            box-shadow: 0 6px 25px rgba(249, 115, 22, 0.5), 0 0 40px rgba(234, 88, 12, 0.3);
+        }
+
+        .btn-warning:hover {
+            box-shadow: 0 10px 35px rgba(249,115,22,0.7), 0 0 60px rgba(234,88,12,0.5);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            box-shadow: 0 6px 25px rgba(6, 182, 212, 0.5), 0 0 40px rgba(8, 145, 178, 0.3);
+        }
+
+        .btn-info:hover {
+            box-shadow: 0 10px 35px rgba(6,182,212,0.7), 0 0 60px rgba(8,145,178,0.5);
+        }
+
+        .bottom-right-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        /* Modal stile semplice per video/immagine */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            width: 90%; 
+            height: 85%; 
+            object-fit: contain; 
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            background: #000;
+        }
+
+        .close { 
+            position: absolute; 
+            top: 15px; 
+            right: 25px; 
+            color: #fff; 
+            font-size: 36px; 
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .workflow { 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .workflow-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .workflow-card {
+            background: rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 28px 24px;
+            flex: 0 0 auto;
+            min-width: 280px;
+            max-width: 360px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+            color: #e2e8f0;
+        }
+
+        .workflow-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.35); 
+            border-color: rgba(99,102,241,0.5); 
+        }
+
+        .workflow-card h3 { 
+            color: #ffffff; 
+            font-size: 1.2em; 
+            margin-bottom: 12px; 
+            text-align: left; 
+            font-weight: 700;
+        }
+
+        .workflow-card p { 
+            color: #cbd5e1; 
+            line-height: 1.6; 
+            text-align: left; 
+            font-size: 0.95em; 
+        }
+
+        .arrow {
+            text-align: center;
+            color: #8b5cf6;
+            font-size: 2.5em;
+            margin: 5px 0;
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+
+
+        @media (max-width: 768px) {
+            .container { 
+                padding: 80px 16px 30px 16px; 
+            }
+            
+            .header h1 { 
+                font-size: 2em; 
+            }
+
+            .topbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .workflow-card { 
+                max-width: 100%; 
+                min-width: 100%;
+            }
+            
+
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper">
+        <img src="per esame_immagini/Intro.png" alt="Energy Background" class="background-image">
+        <div class="background-overlay"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <div class="topbar">
+        <img src="per esame_immagini/logo sime partecipazioni.png" alt="Sime Partecipazioni" class="logo">
+        <div class="nav">
+            <a href="capitolo2.html">← Capitolo 2</a>
+            <a href="capitolo4.html">Capitolo 4 →</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Capitolo 3: Il Cuore del Sistema</h1>
+            <p>Elaborazione Dati e Machine Learning</p>
+        </div>
+
+
+
+        <div class="workflow">
+            <div class="workflow-row">
+                <div class="workflow-card">
+                    <h3>1. 🔄 Aggiornamento Dati SQL</h3>
+                    <p>Acquisizione e aggiornamento dei dati consumi e meteo dal database SQL</p>
+                </div>
+
+                <div class="workflow-card">
+                    <h3>2. 🎯 Addestramento Modello L1</h3>
+                    <p>Training del modello di correzione meteo livello 1 con algoritmi avanzati</p>
+                </div>
+
+                <div class="workflow-card">
+                    <h3>3. 🔧 Addestramento Modello L2</h3>
+                    <p>Addestramento del modello correttivo del forecast base con parametri ottimizzati</p>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="workflow-row">
+                <div class="workflow-card">
+                    <h3>4. 📈 Esecuzione Forecast</h3>
+                    <p>Generazione delle previsioni finali attraverso elaborazione forecasting</p>
+                </div>
+
+                <div class="workflow-card">
+                    <h3>5. 🧪 Esecuzione Backtest</h3>
+                    <p>Validazione delle performance del modello tramite analisi storica</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="imageModal" class="modal" onclick="closeImage(event)">
+        <span class="close" onclick="closeImage(event)">&times;</span>
+        <img id="modalImage" class="modal-content" src="" alt="Screenshot">
+    </div>
+
+    <div class="bottom-right-button">
+        <button class="btn btn-info" onclick="openPanel()">Visualizza Pannello</button>
+    </div>
+
+    <script>
+        function openPanel(){
+            const m = document.getElementById('imageModal');
+            const img = document.getElementById('modalImage');
+            img.src = 'per esame_immagini/Screenshot 2025-10-08 121245.png';
+            m.style.display = 'block';
+        }
+        
+        function closeImage(e){
+            if(e && e.target && e.target.id !== 'modalImage'){
+                document.getElementById('imageModal').style.display = 'none';
+                document.getElementById('modalImage').src = '';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentazione Tesi - Sistema di Forecasting Energetico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background con immagine della lampadina come sfondo principale */
+        .background-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 70% 52%;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        /* Overlay gradiente per dare profondità e leggibilità */
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(10, 25, 47, 0.88) 0%,
+                rgba(10, 25, 47, 0.65) 35%,
+                rgba(10, 25, 47, 0.2) 60%,
+                rgba(10, 25, 47, 0.5) 100%
+            );
+        }
+
+        /* Vignette effect per i bordi */
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                ellipse at center,
+                transparent 30%,
+                rgba(10, 25, 47, 0.5) 80%,
+                rgba(10, 25, 47, 0.8) 100%
+            );
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            width: 90%;
+            padding: 0 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 80vh;
+        }
+
+        .content-main {
+            max-width: 700px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-container {
+            margin-bottom: 50px;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .logo {
+            width: 100%;
+            max-width: 380px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.4));
+        }
+
+        .main-title {
+            font-size: 4.5em;
+            font-weight: 800;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            animation: fadeIn 1s ease-out 0.4s both;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #e2e8f0;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            font-weight: 500;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .description {
+            font-size: 1.15em;
+            color: #cbd5e1;
+            margin-bottom: 50px;
+            line-height: 1.7;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+
+        .button-container {
+            animation: fadeIn 1s ease-out 1s both;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            color: white;
+            border: none;
+            padding: 20px 45px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 1.15em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 
+                0 6px 25px rgba(99, 102, 241, 0.5),
+                0 0 40px rgba(139, 92, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .start-button:hover::before {
+            left: 100%;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 10px 35px rgba(99, 102, 241, 0.7),
+                0 0 60px rgba(139, 92, 246, 0.5);
+        }
+
+        .start-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Elementi decorativi fluttuanti */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #6366f1;
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.6);
+        }
+
+        .floating-ring {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            animation: floatRotate 15s linear infinite;
+        }
+
+        .floating-dot:nth-child(1) { top: 15%; left: 8%; animation-delay: 0s; }
+        .floating-dot:nth-child(2) { top: 65%; left: 12%; animation-delay: 2s; }
+        .floating-dot:nth-child(3) { top: 85%; left: 18%; animation-delay: 4s; }
+        .floating-dot:nth-child(4) { top: 8%; left: 88%; animation-delay: 1s; }
+        .floating-dot:nth-child(5) { top: 45%; left: 92%; animation-delay: 3s; }
+        .floating-dot:nth-child(6) { top: 75%; left: 85%; animation-delay: 5s; }
+
+        .floating-ring:nth-child(7) { top: 25%; left: 70%; animation-delay: 0s; }
+        .floating-ring:nth-child(8) { top: 70%; left: 75%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translate(0, 0); 
+                opacity: 0.3; 
+            }
+            25% { 
+                transform: translate(10px, -25px); 
+                opacity: 0.8; 
+            }
+            50% { 
+                transform: translate(-5px, -40px); 
+                opacity: 1; 
+            }
+            75% { 
+                transform: translate(-15px, -25px); 
+                opacity: 0.8; 
+            }
+        }
+
+        @keyframes floatRotate {
+            0% { 
+                transform: translate(0, 0) rotate(0deg); 
+                opacity: 0.2; 
+            }
+            50% { 
+                transform: translate(20px, -30px) rotate(180deg); 
+                opacity: 0.5; 
+            }
+            100% { 
+                transform: translate(0, 0) rotate(360deg); 
+                opacity: 0.2; 
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .content-main {
+                max-width: 600px;
+            }
+
+            .main-title {
+                font-size: 3.2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 0 30px;
+            }
+
+            .main-title {
+                font-size: 2.5em;
+            }
+
+            .subtitle {
+                font-size: 1.25em;
+            }
+
+            .description {
+                font-size: 1.05em;
+            }
+
+            .logo {
+                max-width: 300px;
+            }
+
+            .start-button {
+                padding: 16px 35px;
+                font-size: 1.05em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1.1em;
+            }
+
+            .description {
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background con immagine della lampadina -->
+    <div class="background-wrapper">
+        <img src="per esame_immagini/Intro.png" alt="Energy Innovation Background" class="background-image">
+        <div class="background-overlay"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <!-- Elementi decorativi fluttuanti -->
+    <div class="floating-elements">
+        <div class="floating-dot"></div>
+        <div class="floating-dot"></div>
+        <div class="floating-dot"></div>
+        <div class="floating-dot"></div>
+        <div class="floating-dot"></div>
+        <div class="floating-dot"></div>
+        <div class="floating-ring"></div>
+        <div class="floating-ring"></div>
+    </div>
+
+    <!-- Contenuto principale -->
+    <div class="content-container">
+        <div class="content-main">
+            <div class="logo-container">
+                <img src="per esame_immagini/logo sime partecipazioni.png" alt="Sime Partecipazioni" class="logo">
+            </div>
+            
+            <h1 class="main-title">Presentazione Tesi</h1>
+            <h2 class="subtitle">Trasformazione Digitale nel Settore Energetico</h2>
+            <p class="description">Un Ecosistema Integrato per il Forecasting dei Consumi Energetici attraverso Machine Learning e Automazione</p>
+            
+            <div class="button-container">
+                <a href="presentazione_personale.html" class="start-button">
+                    Inizia la Presentazione
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

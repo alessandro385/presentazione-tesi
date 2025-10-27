@@ -150,7 +150,6 @@
       <div class="nav">
         <a href="#" onclick="navigateBack(event)">← Capitolo 5</a>
         <a href="#" onclick="navigateToThanks(event)">Ringraziamenti →</a>
-        <a href="#" onclick="navigateHome(event)">Home</a>
       </div>
     </div>
 
@@ -257,16 +256,6 @@
       curtain.classList.add('curtain-from-bottom');
       setTimeout(() => {
         window.location.href = 'capitolo5.html';
-      }, 1000);
-    }
-
-    function navigateHome(e) {
-      e.preventDefault();
-      const curtain = document.getElementById('curtain');
-      curtain.classList.remove('curtain-up');
-      curtain.classList.add('curtain-from-bottom');
-      setTimeout(() => {
-        window.location.href = 'index.html';
       }, 1000);
     }
 

@@ -3,409 +3,619 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trasformazione Digitale nel Settore Energetico</title>
+    <title>Presentazione Personale - Alessandro Barresi</title>
     <style>
-        /* Reset e Base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
+        html, body {
+            width: 100%;
+            height: 100%;
             overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #0a192f;
             color: #e2e8f0;
         }
 
-        /* Sfondo con immagine e overlay */
-        .background-wrapper { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: 0; 
-        }
-        
-        .background-image { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            object-position: 70% 52%; 
-        }
-        
-        .background-overlay { 
-            position: absolute; 
-            inset: 0; 
-            background: linear-gradient(to right, rgba(10,25,47,.88) 0%, rgba(10,25,47,.65) 35%, rgba(10,25,47,.2) 60%, rgba(10,25,47,.5) 100%); 
-        }
-        
-        .vignette { 
-            position: absolute; 
-            inset: 0; 
-            background: radial-gradient(ellipse at center, transparent 30%, rgba(10,25,47,.5) 80%, rgba(10,25,47,.8) 100%); 
-        }
-
-        /* Top bar */
-        .topbar { 
-            position: fixed; 
-            top: 20px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: 95%; 
-            max-width: 1400px; 
-            z-index: 10; 
-        }
-        
-        .logo { 
-            position: absolute; 
-            top: 0; 
-            left: -20px; 
-            height: 100px; 
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,.4)); 
-        }
-        
-        .nav { 
-            position: absolute; 
-            top: 0; 
-            right: -20px; 
-            display: flex; 
-            gap: 12px; 
-        }
-        
-        .nav a { 
-            background: rgba(255,255,255,.12); 
-            border: 1px solid rgba(255,255,255,.25); 
-            color: #fff; 
-            text-decoration: none; 
-            padding: 10px 16px; 
-            border-radius: 20px; 
-            font-weight: 600; 
-            font-size: .95em; 
-            backdrop-filter: blur(8px); 
-            transition: all .25s; 
-        }
-        
-        .nav a:hover { 
-            background: rgba(255,255,255,.2); 
-            transform: translateY(-1px); 
-        }
-
-        /* Header della pagina */
-        .page-header {
+        /* Curtain Effect */
+        .curtain {
             position: fixed;
-            top: 140px;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #0a192f 0%, #1a2838 100%);
+            z-index: 9999;
+            animation: curtainDown 1.2s cubic-bezier(0.45, 0, 0.15, 1) forwards;
+        }
+
+        @keyframes curtainDown {
+            to {
+                top: 0;
+            }
+        }
+
+        .curtain-up {
+            animation: curtainUp 1s cubic-bezier(0.45, 0, 0.15, 1) forwards;
+        }
+
+        @keyframes curtainUp {
+            from {
+                top: 0;
+            }
+            to {
+                top: 100%;
+            }
+        }
+
+        /* Curtain from bottom animation */
+        .curtain-from-bottom {
+            top: auto;
+            bottom: -100%;
+            animation: curtainFromBottom 1s cubic-bezier(0.45, 0, 0.15, 1) forwards;
+        }
+
+        @keyframes curtainFromBottom {
+            to {
+                bottom: 0;
+            }
+        }
+
+        /* Particles Background */
+        .particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        /* Background Image */
+        .background-wrapper {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+        }
+
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .background-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, 
+                rgba(10,25,47,.95) 0%, 
+                rgba(10,25,47,.85) 40%, 
+                rgba(10,25,47,.6) 70%, 
+                rgba(10,25,47,.85) 100%);
+        }
+
+        /* Navigation */
+        .topbar {
+            position: fixed;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 95%;
-            max-width: 1400px;
-            z-index: 9;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .page-header h1 {
-            font-size: 2.5em;
-            font-weight: 800;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
-
-        .page-header h2 {
-            color: #cbd5e1;
-            font-size: 1.1em;
-            font-weight: 400;
-        }
-
-        /* Container Principale */
-        .container {
-            display: grid;
-            grid-template-columns: 50% 50%;
-            grid-template-rows: 1fr 100px;
-            gap: 20px;
-            padding: 260px 70px 70px 70px;
-            height: 100vh;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Prima Riga - Colonna Sinistra (IMMAGINE) */
-        .row-1-left {
-            grid-column: 1;
-            grid-row: 1;
-            border-radius: 12px;
-            overflow: hidden;
+            width: 96%;
+            max-width: 1600px;
+            z-index: 100;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .row-1-left img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .row-1-left img:hover {
-            transform: scale(1.02);
-        }
-
-        /* Prima Riga - Colonna Destra (PROBLEMI + SOLUZIONE) */
-        .row-1-right {
-            grid-column: 2;
-            grid-row: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* STILE GENERALE DELLE CARD */
-        .card {
-            background: rgba(255,255,255,0.06);
-            padding: 24px 28px;
-            border-radius: 16px;
-            flex: 1;
-            border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.35);
-            border-color: rgba(99,102,241,0.5);
-        }
-
-        .card h3 {
-            color: #ffffff;
-            font-size: 1.35em;
-            margin-bottom: 12px;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-
-        .card p {
-            color: #cbd5e1;
-            line-height: 1.6;
-            font-size: 0.98em;
-            margin: 0;
-        }
-
-        .card p strong {
-            color: #e0e7ff;
-            font-weight: 600;
-        }
-
-        /* Seconda Riga - Colonna Sinistra (MODERNIZZAZIONE) */
-        .row-2-left {
-            grid-column: 1;
-            grid-row: 2;
-        }
-
-        /* Seconda Riga - Colonna Destra (AUTOMAZIONE) */
-        .row-2-right {
-            grid-column: 2;
-            grid-row: 2;
-        }
-
-        /* Modal per immagine ingrandita */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            margin: auto;
-            display: block;
-            width: 95%;
-            height: 95%;
-            object-fit: contain;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 10px;
-        }
-
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #f1f1f1;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        .close:hover {
-            color: #bbb;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1.3s forwards;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
             to { opacity: 1; }
         }
 
+        .logo {
+            height: 70px;
+            filter: drop-shadow(0 4px 15px rgba(99, 102, 241, 0.5));
+        }
+
+        .nav {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav a {
+            background: rgba(99, 102, 241, 0.25);
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 50px 50px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Title */
+        .slide-header {
+            text-align: center;
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 1.4s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-header h1 {
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 50%, #6366f1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .slide-header h2 {
+            color: #94a3b8;
+            font-size: 1.15em;
+            font-weight: 400;
+        }
+
+        /* Content Grid */
+        .content-wrapper {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            grid-template-rows: 1fr auto;
+            gap: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 1.5s forwards;
+        }
+
+        /* Profile Card - Left Column */
+        .profile-card {
+            grid-column: 1;
+            grid-row: 1 / 3;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #a855f7, #6366f1);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { background-position: -200% 0; }
+        }
+
+        .profile-title {
+            color: #ffffff;
+            font-size: 1.3em;
+            font-weight: 700;
+            text-align: center;
+            width: 100%;
+        }
+
+        .profile-photo-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .profile-photo-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: conic-gradient(from 0deg, #6366f1, #8b5cf6, #a855f7, #6366f1);
+            border-radius: 50%;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .profile-photo {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #0a192f;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            text-align: center;
+        }
+
+        .profile-name h4 {
+            color: #ffffff;
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .profile-name p {
+            color: #a5b4fc;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        .company-logo {
+            max-width: 160px;
+            margin-top: auto;
+            filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.4));
+        }
+
+        /* Responsibilities Card - Top Right */
+        .responsibilities-card {
+            grid-column: 2;
+            grid-row: 1;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(5, 150, 105, 0.08));
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 20px;
+            padding: 25px 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .responsibilities-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #10b981, #059669);
+        }
+
+        .card-title {
+            color: #ffffff;
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 18px;
+            padding-left: 10px;
+        }
+
+        .responsibilities-list {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+
+        .responsibilities-list li {
+            padding-left: 35px;
+            position: relative;
+            color: #cbd5e1;
+            font-size: 0.98em;
+            line-height: 1.5;
+        }
+
+        .responsibilities-list li::before {
+            content: "▶";
+            color: #10b981;
+            position: absolute;
+            left: 10px;
+            font-size: 1em;
+        }
+
+        .responsibilities-list strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Bottom Cards Grid */
+        .bottom-grid {
+            grid-column: 2;
+            grid-row: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-card {
+            border-radius: 20px;
+            padding: 22px 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .company-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(37, 99, 235, 0.08));
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .company-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(217, 119, 6, 0.08));
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+
+        .info-card h4 {
+            color: #ffffff;
+            font-size: 1.25em;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .info-card p {
+            color: #cbd5e1;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .info-card strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 1400px) {
             .container {
+                padding: 90px 35px 25px;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 320px 1fr;
+            }
+
+            .slide-header h1 {
+                font-size: 2.4em;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .content-wrapper {
                 grid-template-columns: 1fr;
-                grid-template-rows: auto auto auto auto;
-                padding: 180px 20px 20px 20px;
-                gap: 15px;
+                grid-template-rows: auto auto auto;
             }
 
-            .row-1-left,
-            .row-1-right,
-            .row-2-left,
-            .row-2-right {
+            .profile-card {
                 grid-column: 1;
-            }
-
-            .row-1-left {
                 grid-row: 1;
-                max-height: 300px;
+                flex-direction: row;
+                padding: 20px;
             }
 
-            .row-1-right {
+            .responsibilities-card {
+                grid-column: 1;
                 grid-row: 2;
             }
 
-            .row-2-left {
+            .bottom-grid {
+                grid-column: 1;
                 grid-row: 3;
-            }
-
-            .row-2-right {
-                grid-row: 4;
-            }
-
-            .page-header h1 {
-                font-size: 1.8em;
-            }
-
-            .page-header h2 {
-                font-size: 0.95em;
-            }
-
-            .logo {
-                height: 70px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Sfondo -->
+    <!-- Curtain Effect -->
+    <div class="curtain" id="curtain"></div>
+
+    <!-- Particles -->
+    <canvas class="particles-canvas" id="particles"></canvas>
+
+    <!-- Background -->
     <div class="background-wrapper">
-        <img src="per esame_immagini/Intro.png" alt="Energy Background" class="background-image">
+        <img src="per esame_immagini/Intro.png" alt="Background" class="background-image">
         <div class="background-overlay"></div>
-        <div class="vignette"></div>
     </div>
 
-    <!-- Top bar -->
+    <!-- Navigation -->
     <div class="topbar">
         <img src="per esame_immagini/logo sime partecipazioni.png" alt="Sime Partecipazioni" class="logo">
         <div class="nav">
-            <a href="presentazione_personale.html">← Chi Sono</a>
-            <a href="capitolo1.html">Capitolo 1 →</a>
+            <a href="#" onclick="navigateBack(event)">← Indietro</a>
+            <a href="#" onclick="navigateForward(event)">Inizia Presentazione →</a>
         </div>
     </div>
 
-    <!-- Header pagina -->
-    <div class="page-header">
-        <h1>Trasformazione Digitale nel Settore Energetico</h1>
-        <h2>Un Ecosistema Integrato per il Forecasting dei Consumi Energetici</h2>
-    </div>
-
-    <!-- Container principale -->
+    <!-- Main Content -->
     <div class="container">
-        <!-- Prima Riga -->
-        <div class="row-1-left">
-            <img src="per esame_immagini/Screenshot 2025-10-08 121847.png" alt="Struttura Database SQL Server" onclick="openModal()">
-        </div>
-        
-        <div class="row-1-right">
-            <div class="card">
-                <h3>❌ Problemi Tradizionali</h3>
-                <p><strong>Frammentazione:</strong> Dati sparsi in Excel e Access<br>
-                <strong>Errori Umani:</strong> Processi manuali soggetti a errori<br>
-                <strong>Scalabilità:</strong> Limiti dei sistemi legacy<br>
-                <strong>Precisione:</strong> Forecasting basato su ricalendarizzazione</p>
-            </div>
-            <div class="card">
-                <h3>✅ La Nostra Soluzione</h3>
-                <p><strong>Database Centralizzato:</strong> SQL Server come hub unico<br>
-                <strong>Automazione:</strong> Script Python per processi ripetitivi<br>
-                <strong>Machine Learning:</strong> Modelli predittivi avanzati<br>
-                <strong>Dashboard:</strong> Analisi interattive in tempo reale</p>
-            </div>
+        <div class="slide-header">
+            <h1>Presentazione Personale</h1>
+            <h2>Alessandro Barresi - Supply & Portfolio Manager</h2>
         </div>
 
-        <!-- Seconda Riga -->
-        <div class="row-2-left">
-            <div class="card">
-                <h3>🏗️ Modernizzazione</h3>
-                <p>Da Access/VBA a SQL Server con architettura scalabile e moderna</p>
+        <div class="content-wrapper">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="profile-title">👨‍💼 Chi Sono</div>
+                <div class="profile-photo-wrapper">
+                    <img src="per esame_immagini/ReactNative-snapshot-image1990861406668673741.jpg" 
+                         alt="Alessandro Barresi" 
+                         class="profile-photo">
+                </div>
+                <div class="profile-name">
+                    <h4>Alessandro Barresi</h4>
+                    <p>Supply & Portfolio Manager - Junior</p>
+                </div>
+                <img src="per esame_immagini/logo sime partecipazioni.png" 
+                     alt="Sime" 
+                     class="company-logo">
             </div>
-        </div>
-        
-        <div class="row-2-right">
-            <div class="card">
-                <h3>🤖 Automazione</h3>
-                <p>Eliminazione errori umani attraverso processi automatizzati</p>
-            </div>
-        </div>
-    </div>
 
-    <!-- Modal per immagine ingrandita -->
-    <div id="imageModal" class="modal">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="modalImage">
+            <!-- Responsibilities -->
+            <div class="responsibilities-card">
+                <div class="card-title">🎯 Le Mie Responsabilità</div>
+                <ul class="responsibilities-list">
+                    <li><strong>Portfolio Management:</strong> Gestione del portafoglio energetico di ~60.000 POD</li>
+                    <li><strong>Forecasting:</strong> Previsioni dei consumi energetici per ottimizzazione economica</li>
+                    <li><strong>Sviluppo Database:</strong> Creazione di sistemi per accelerare i processi operativi</li>
+                </ul>
+            </div>
+
+            <!-- Bottom Cards -->
+            <div class="bottom-grid">
+                <div class="info-card company-card">
+                    <h4>🏢 Sime Partecipazioni</h4>
+                    <p>Operatore del settore energetico specializzato nella gestione di portafogli clienti, con focus sull'innovazione tecnologica e l'ottimizzazione dei processi di forecasting per il mercato elettrico italiano.</p>
+                </div>
+
+                <div class="info-card project-card">
+                    <h4>💡 Il Progetto di Tesi</h4>
+                    <p>Questo progetto nasce dalle sfide quotidiane: <strong>trasformare l'infrastruttura dati tradizionale in un ecosistema intelligente con Machine Learning e automazione</strong> per migliorare accuratezza ed efficienza.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        function openModal() {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            const img = document.querySelector('.row-1-left img');
+        // Automatically remove curtain after initial animation
+        window.addEventListener('load', () => {
+            const curtain = document.getElementById('curtain');
+            setTimeout(() => {
+                curtain.classList.add('curtain-up');
+            }, 1200); // Wait for curtainDown animation to complete
+        });
+
+        // Particle System
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            modal.style.display = 'block';
-            modalImg.src = img.src;
-        }
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
-        function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(99, 102, 241, 0.5)';
+                ctx.fill();
+            });
 
-        // Chiudi modal con Esc o click fuori
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.2 * (1 - dist / 100)})`;
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
 
-        document.getElementById('imageModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+        // Navigation with curtain effect
+        function navigateBack(e) {
+            e.preventDefault();
+            const curtain = document.getElementById('curtain');
+            curtain.classList.add('curtain-up');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        }
+
+        function navigateForward(e) {
+            e.preventDefault();
+            const curtain = document.getElementById('curtain');
+            curtain.classList.remove('curtain-up'); // Remove any existing classes
+            curtain.classList.add('curtain-from-bottom');
+            setTimeout(() => {
+                window.location.href = 'l.html';
+            }, 1000);
+        }
     </script>
 </body>
 </html>

@@ -20,6 +20,55 @@
             align-items: center;
             overflow: hidden;
             color: #e2e8f0;
+            background: #0a192f;
+        }
+
+        /* Curtain Effect */
+        .curtain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #0a192f 0%, #1a2838 100%);
+            z-index: 9999;
+        }
+
+        .curtain-up {
+            animation: curtainUp 1s cubic-bezier(0.45, 0, 0.15, 1) forwards;
+        }
+
+        @keyframes curtainUp {
+            from {
+                top: 0;
+            }
+            to {
+                top: 100%;
+            }
+        }
+
+        /* Curtain from bottom animation */
+        .curtain-from-bottom {
+            top: auto;
+            bottom: -100%;
+            animation: curtainFromBottom 1s cubic-bezier(0.45, 0, 0.15, 1) forwards;
+        }
+
+        @keyframes curtainFromBottom {
+            to {
+                bottom: 0;
+            }
+        }
+
+        /* Particles Background */
+        .particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.25;
         }
 
         /* Sfondo stile index */
@@ -29,7 +78,7 @@
             left: 0; 
             width: 100%; 
             height: 100%; 
-            z-index: 0; 
+            z-index: 1; 
         }
         
         .background-image { 
@@ -80,7 +129,13 @@
             transform: translateX(-50%); 
             width: 95%; 
             max-width: 1400px; 
-            z-index: 10; 
+            z-index: 10;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
         
         .logo { 
@@ -124,6 +179,19 @@
             text-align: center;
             flex-shrink: 0;
             position: relative;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .slide-header h1 {
@@ -178,85 +246,162 @@
         .image-section {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            justify-content: center;
             padding-right: 20px;
             height: 100%;
-            justify-content: center;
+            opacity: 0;
+            animation: slideInLeft 1s ease 0.8s forwards;
         }
 
-        .system-image {
-            max-width: 100%;
-            max-height: 600px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            margin-bottom: 10px;
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .view-table-button {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            color: #ffffff;
+            padding: 20px 35px;
+            border-radius: 16px;
+            font-size: 1.1em;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .system-image:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-        }
-
-        .image-caption {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
             text-align: center;
-            font-style: italic;
-            color: #6c757d;
-            font-size: 0.9em;
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-table-button::before {
+            content: '📊';
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        .view-table-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .view-table-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.4);
+            border-color: rgba(99, 102, 241, 0.8);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.25));
+        }
+
+        .view-table-button:hover::after {
+            left: 100%;
+        }
+
+        .view-table-button:active {
+            transform: translateY(-2px) scale(1.02);
         }
 
         .cards-section {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
             height: 100%;
             justify-content: space-between;
+            opacity: 0;
+            animation: slideInRight 1s ease 0.9s forwards;
         }
 
-        /* Card stile capitoli 3-4 */
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Card stile capitolo 1 */
         .workflow-card {
             background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 10px 13px;
             border-radius: 16px;
-            padding: 14px 16px 10px 16px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
             flex: 1;
             min-height: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .workflow-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .workflow-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 45px rgba(99,102,241,0.3), 0 0 30px rgba(99,102,241,0.2);
+            border-color: rgba(99,102,241,0.6);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .workflow-card:hover::before {
+            left: 100%;
+        }
+
+        .workflow-card h3 {
+            color: #ffffff;
+            font-size: 1.35em;
+            margin-bottom: 6px;
+            text-align: left;
+            font-weight: 800;
             position: relative;
-            border: 1px solid rgba(255,255,255,0.15);
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(99,102,241,0.3);
             transition: all 0.3s ease;
-            color: #e2e8f0;
         }
 
-        .workflow-card:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.35); 
-            border-color: rgba(99,102,241,0.5); 
+        .workflow-card:hover h3 {
+            text-shadow: 0 2px 15px rgba(99,102,241,0.6);
+            color: #e0e7ff;
         }
 
-        .workflow-card h3 { 
-            color: #ffffff; 
-            font-size: 1.2em; 
-            margin-bottom: 8px; 
-            text-align: left; 
-            font-weight: 500;
+        .workflow-card p {
+            color: #e5e7eb;
+            font-size: 1.08em;
             line-height: 1.3;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s ease;
         }
 
-        .workflow-card p { 
-            color: #e5e7eb; 
-            line-height: 1.4; 
-            text-align: left; 
-            font-size: 0.95em;
-            font-weight: 400;
-            margin: 0;
+        .workflow-card:hover p {
+            color: #f3f4f6;
         }
 
         .section {
@@ -317,15 +462,16 @@
         .modal-content {
             margin: auto;
             display: block;
-            width: 95%;
-            height: 95%;
+            max-width: 70%;
+            max-height: 80%;
             object-fit: contain;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 10px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4);
+            border: 2px solid rgba(99, 102, 241, 0.3);
         }
 
         .close {
@@ -378,8 +524,14 @@
     </style>
 </head>
 <body>
+    <!-- Curtain Effect -->
+    <div class="curtain" id="curtain"></div>
+
+    <!-- Particles -->
+    <canvas class="particles-canvas" id="particles"></canvas>
+
     <div class="background-wrapper">
-        <img src="per esame_immagini/Intro.png" alt="Energy Background" class="background-image">
+        <img src="per esame_immagini/sfondo_capitolo_2.png" alt="Energy Background" class="background-image">
         <div class="background-overlay"></div>
         <div class="vignette"></div>
     </div>
@@ -387,8 +539,8 @@
     <div class="topbar">
         <img src="per esame_immagini/logo sime partecipazioni.png" alt="Sime Partecipazioni" class="logo">
         <div class="nav">
-            <a href="capitolo1.html">← Capitolo 1</a>
-            <a href="capitolo3.html">Capitolo 3 →</a>
+            <a href="#" onclick="navigateBack(event)">← Capitolo 1</a>
+            <a href="#" onclick="navigateForward(event)">Capitolo 3 →</a>
         </div>
     </div>
 
@@ -402,7 +554,9 @@
         <div class="slide-content">
             <div class="main-content">
                 <div class="image-section">
-                    <img src="per esame_immagini/Immagine capitolo2.png" alt="Tabella Località Incidenza Consumi - Sistema POD-Località" class="system-image" onclick="openModal()">
+                    <button class="view-table-button" onclick="openModal()">
+                        Visualizza Tabella Incidenza Consumi
+                    </button>
                 </div>
                 
                 <div class="cards-section">
@@ -413,12 +567,12 @@
                     
                     <div class="workflow-card">
                         <h3>2. Calcolo delle Incidenze</h3>
-                        <p>Media ponderata vs semplice per trasformare la geografia in pesi quantitativi basati sui consumi effettivi</p>
+                        <p>Media ponderata per fare in modo che i dati meteo siano basati sulle località di consumo</p>
                     </div>
 
                     <div class="workflow-card">
                         <h3>3. Integrazione Dati Meteo</h3>
-                        <p>API Open-Meteo per acquisire dati meteorologici storici e previsioni con struttura a tre tabelle distinte</p>
+                        <p>API Open-Meteo per acquisire dati meteorologici storici e previsioni</p>
                     </div>
 
                     <div class="workflow-card">
@@ -439,15 +593,99 @@
     </div>
 
     <script>
+        // Particle System
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        for (let i = 0; i < 60; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(99, 102, 241, 0.5)';
+                ctx.fill();
+            });
+
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.2 * (1 - dist / 120)})`;
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Automatically remove curtain after page load
+        window.addEventListener('load', () => {
+            const curtain = document.getElementById('curtain');
+            setTimeout(() => {
+                curtain.classList.add('curtain-up');
+            }, 300);
+        });
+
+        // Navigation with curtain effect
+        function navigateBack(e) {
+            e.preventDefault();
+            const curtain = document.getElementById('curtain');
+            curtain.classList.remove('curtain-up');
+            curtain.classList.add('curtain-from-bottom');
+            setTimeout(() => {
+                window.location.href = 'capitolo1.html';
+            }, 1000);
+        }
+
+        function navigateForward(e) {
+            e.preventDefault();
+            const curtain = document.getElementById('curtain');
+            curtain.classList.remove('curtain-up');
+            curtain.classList.add('curtain-from-bottom');
+            setTimeout(() => {
+                window.location.href = 'capitolo3.html';
+            }, 1000);
+        }
+
         // Funzioni per il modal dell'immagine
         function openModal() {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
-            const img = document.querySelector('.system-image');
             
             modal.style.display = 'block';
-            modalImg.src = img.src;
-            modalImg.alt = img.alt;
+            modalImg.src = 'per esame_immagini/Immagine capitolo2.png';
+            modalImg.alt = 'Tabella Località Incidenza Consumi - Sistema POD-Località';
         }
 
         function closeModal() {
